@@ -3,13 +3,13 @@
 This repo can be deployed as:
 
 - Backend API on Render
-- Frontend on Vercel
+- Frontend on Netlify
 
-The same Next.js project is used for both. The Vercel frontend calls the Render API through `NEXT_PUBLIC_API_BASE_URL`.
+The same Next.js project is used for both. The Netlify frontend calls the Render API through `NEXT_PUBLIC_API_BASE_URL`.
 
 ## 1. Push to GitHub
 
-The project is already configured as a Git repo. Push `main` to GitHub before connecting Render or Vercel.
+The project is already configured as a Git repo. Push `main` to GitHub before connecting Render or Netlify.
 
 ## 2. Deploy Backend on Render
 
@@ -25,29 +25,31 @@ The project is already configured as a Git repo. Push `main` to GitHub before co
    - `RAZORPAY_KEY_SECRET`
    - `CORS_ALLOWED_ORIGINS`
 
-Set `CORS_ALLOWED_ORIGINS` to your Vercel URL after Vercel is deployed, for example:
+Set `CORS_ALLOWED_ORIGINS` to your Netlify URL after Netlify is deployed, for example:
 
 ```text
-https://allo-health.vercel.app
+https://allo-health.netlify.app
 ```
 
 For preview deployments or testing, you can include multiple origins separated by commas.
 
-## 3. Deploy Frontend on Vercel
+## 3. Deploy Frontend on Netlify
 
-1. Import this GitHub repo into Vercel.
-2. Use the default Next.js build settings.
-3. Add this environment variable in Vercel:
+1. Import this GitHub repo into Netlify.
+2. Netlify reads `netlify.toml`, or you can set these manually:
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+3. Add this environment variable in Netlify:
    - `NEXT_PUBLIC_API_BASE_URL=https://YOUR_RENDER_SERVICE.onrender.com`
 
 The frontend does not need MongoDB or Razorpay secrets when it is calling the Render backend.
 
 ## 4. Update Render CORS
 
-After Vercel gives you the final production URL, go back to Render and set:
+After Netlify gives you the final production URL, go back to Render and set:
 
 ```text
-CORS_ALLOWED_ORIGINS=https://YOUR_VERCEL_APP.vercel.app
+CORS_ALLOWED_ORIGINS=https://YOUR_NETLIFY_APP.netlify.app
 ```
 
 Redeploy or restart the Render service after changing the environment variable.
