@@ -23,6 +23,7 @@ import {
   XCircle
 } from "lucide-react";
 import { toast } from "sonner";
+import { apiUrl } from "@/lib/api-client";
 
 type Product = {
   id: string;
@@ -111,7 +112,7 @@ export default function ProductListingPage() {
   async function loadProducts() {
     setLoading(true);
     try {
-      const response = await fetch("/api/products", { cache: "no-store" });
+      const response = await fetch(apiUrl("/api/products"), { cache: "no-store" });
       const data = (await response.json().catch(() => ({}))) as {
         products?: Product[];
         error?: string;
@@ -142,7 +143,7 @@ export default function ProductListingPage() {
   async function loadReservations() {
     setReservationsLoading(true);
     try {
-      const response = await fetch("/api/reservations", { cache: "no-store" });
+      const response = await fetch(apiUrl("/api/reservations"), { cache: "no-store" });
       const data = (await response.json().catch(() => ({}))) as {
         reservations?: ReservationSummary[];
         error?: string;
@@ -162,7 +163,7 @@ export default function ProductListingPage() {
 
   async function loadWarehouses() {
     try {
-      const response = await fetch("/api/warehouses", { cache: "no-store" });
+      const response = await fetch(apiUrl("/api/warehouses"), { cache: "no-store" });
       const data = (await response.json().catch(() => ({}))) as {
         warehouses?: Warehouse[];
         error?: string;
@@ -241,7 +242,7 @@ export default function ProductListingPage() {
     setErrorPulse(null);
 
     try {
-      const response = await fetch("/api/reservations", {
+      const response = await fetch(apiUrl("/api/reservations"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -280,7 +281,7 @@ export default function ProductListingPage() {
   async function cancelReservation(reservationId: string) {
     setReleasingId(reservationId);
     try {
-      const response = await fetch(`/api/reservations/${reservationId}/release`, {
+      const response = await fetch(apiUrl(`/api/reservations/${reservationId}/release`), {
         method: "POST",
         headers: {
           "Idempotency-Key": crypto.randomUUID()
@@ -306,7 +307,7 @@ export default function ProductListingPage() {
     setAddingInventory(true);
 
     try {
-      const response = await fetch("/api/products", {
+      const response = await fetch(apiUrl("/api/products"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -346,7 +347,7 @@ export default function ProductListingPage() {
     setAddingWarehouse(true);
 
     try {
-      const response = await fetch("/api/warehouses", {
+      const response = await fetch(apiUrl("/api/warehouses"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

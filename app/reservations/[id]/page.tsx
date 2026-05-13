@@ -16,6 +16,7 @@ import {
   XCircle
 } from "lucide-react";
 import { toast } from "sonner";
+import { apiUrl } from "@/lib/api-client";
 
 const FALLBACK_PRODUCT_IMAGE =
   "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80";
@@ -98,7 +99,7 @@ export default function ReservationPage() {
   const loadReservation = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/reservations/${params.id}`, {
+      const response = await fetch(apiUrl(`/api/reservations/${params.id}`), {
         cache: "no-store"
       });
       const data = await response.json();
@@ -157,7 +158,7 @@ export default function ReservationPage() {
     setErrorPulse(false);
 
     try {
-      const orderResponse = await fetch(`/api/reservations/${reservation.id}/razorpay-order`, {
+      const orderResponse = await fetch(apiUrl(`/api/reservations/${reservation.id}/razorpay-order`), {
         method: "POST"
       });
       const orderPayload = await orderResponse.json();
@@ -206,7 +207,7 @@ export default function ReservationPage() {
           razorpay_signature: string;
         }) => {
           try {
-            const response = await fetch(`/api/reservations/${reservation.id}/confirm`, {
+            const response = await fetch(apiUrl(`/api/reservations/${reservation.id}/confirm`), {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -266,7 +267,7 @@ export default function ReservationPage() {
     setErrorPulse(false);
 
     try {
-      const response = await fetch(`/api/reservations/${reservation.id}/release`, {
+      const response = await fetch(apiUrl(`/api/reservations/${reservation.id}/release`), {
         method: "POST",
         headers: {
           "Idempotency-Key": crypto.randomUUID()
